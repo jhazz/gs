@@ -1,0 +1,17 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>asmloader 1.1</title>
+</head>
+<script src="../amd/amd.js"></script>
+<script>
+  var gstore1;
+  amd("gs","../build/gs.js", function(exports) {
+    gstore1=new exports.gs.Module("gstore1");
+    debugger;
+    gstore1.load("../build/gs.wasm",{}).then(()=>{
+      console.log(gstore1);
+      console.log(gstore1.e.gsGetHeapBase());
+    });
+  });
+</script>

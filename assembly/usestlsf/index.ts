@@ -1,7 +1,9 @@
 import "allocator/tlsf";
 
-// tslint:disable-line
-export { memory }; 
+
+import {memory} from "allocator/../memory";
+export {memory}; 
+
 
 export const COLOR: string = "red";
 
@@ -20,6 +22,8 @@ export class Car {
   static readonly usualDoors: i32 = 3;
 
   numDoors: i32;
+  numTyres: i8;
+  st: string;
   private doorsOpen: bool = false;
 
   get isDoorsOpen(): bool { return this.doorsOpen; }
@@ -27,6 +31,7 @@ export class Car {
 
   constructor(numDoors: i32) {
     this.numDoors = numDoors;
+    this.numTyres = 4;
   }
 
   openDoors(): bool {
@@ -64,4 +69,8 @@ export function calladd(fn: (a: i32, b: i32) => i32, a: i32, b: i32): i32 {
 
 export function dotrace(num: f64): void {
   trace("The answer is", 1, num);
+}
+
+export function printString(val:string):void{
+  
 }

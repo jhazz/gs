@@ -1,0 +1,1 @@
+D:\Users\jhazz.jhazz\AppData\Roaming\npm\tsc.cmd src/test_type.ts --sourceMap --outFile outresult.js -m AMD

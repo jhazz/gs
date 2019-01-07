@@ -1,15 +1,37 @@
+# Graph Storage
+This is a bad luck experiment with AssemblyScript
 
-==Структура памяти==
-Обычные текстовые константы, импортируемые в модуль получают слудеющий вид в памяти:
+u32 do not acceptable by `asc` compiler
 
-A      (data (i32.const 8) "\01\00\00\00 A\00")
-AB     (data (i32.const 8) "\02\00\00\00 A\00B\00") 
-ABC    (data (i32.const 8) "\03\00\00\00 A\00B\00C\00")
-ABCDEF (data (i32.const 8) "\06\00\00\00 A\00B\00C\00D\00E\00F\00")
 
-Статическая память увеличивает значение $HEAP_BASE в последнем случае до 24
-Непонятно_что_в_начале_с_нулями (8 bytes) + SIZE(4 bytes)+DATA(12 bytes)
+Source file: https://github.com/jhazz/gs/blob/master/assembly/gs/test.as.ts
 
-Если убрать экспортируемые числовые константы , то размер HEAP не изменяется
-Если добавить еще одну переменную с двумя символами, то HEAP увеличится до 32
+```ts
+export const UNSIGNED_VALUE1: u32 =100000;
+export const UNSIGNED_VALUE2: u32 =0xffffffff; // Should be 4294967295
+export const UNSIGNED_VALUE3: u32 =-1;
+```
+
+compiled to https://github.com/jhazz/gs/blob/master/build/test.wat
+
+
+(module
+ (type $v (func))
+ (memory $0 0)
+ (table $0 1 anyfunc)
+ (elem (i32.const 0) $null)
+ (global $assembly/gs/test.as/UNSIGNED_VALUE1 i32 (i32.const 100000))
+ (global $assembly/gs/test.as/UNSIGNED_VALUE2 i32 (**i32.const -1**))
+ (global $assembly/gs/test.as/UNSIGNED_VALUE3 i32 (i32.const -1))
+ (global $HEAP_BASE i32 (i32.const 8))
+ (export "memory" (memory $0))
+ (export "table" (table $0))
+ (export "UNSIGNED_VALUE1" (global $assembly/gs/test.as/UNSIGNED_VALUE1))
+ (export "UNSIGNED_VALUE2" (global $assembly/gs/test.as/UNSIGNED_VALUE2))
+ (export "UNSIGNED_VALUE3" (global $assembly/gs/test.as/UNSIGNED_VALUE3))
+ (func $null (; 0 ;) (type $v)
+ )
+)
+
+
 

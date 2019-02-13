@@ -3,7 +3,7 @@
     "asbuild:debug":    "asc assembly/gs/gs.as.ts -b build/gs.wasm -t build/gs.wat --sourceMap --validate --debug",
     "asbuild:optimize": "asc assembly/gs/gs.as.ts -b build/gs.wasm -t build/gs.wat --validate --optimize",
     "tsbuild":          "tsc -t es2015 ts/gs.ts --sourceMap --outFile build/gs.js -m AMD",
-    "asbuild:test":    "asc assembly/gs/test.as.ts -b build/test.wasm -t build/test.wat --sourceMap --validate --debug",
+    "asbuild:test":     "asc assembly/gs/test.as.ts -b build/test.wasm -t build/test.wat --sourceMap --validate --debug",
     "deploy": "cmd /C deploy.cmd"
   }
 }

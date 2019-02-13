@@ -35,6 +35,16 @@ export namespace gs{
         INIT_64K_PAGECOUNT:1,
         MAX_64K_PAGECOUNT:256,
         X_BUFFER_SIZE:5000,
+        xprintf:()=>{
+          var xp:pointer=this.staticTop,r=[],r2;
+          env.xdumpFrom(xp,r);
+          r2=r[0];
+          if(typeof r2[0]=="string"){
+            console.log(r2[0].replace(/\{\$\d\}/g,function(x:any){
+              return ""+r2[parseInt(x.substr(2,x.length-3),10)];
+            }));
+          }
+        },
         xdump:()=>{
           var xp:pointer=this.staticTop,r=[];
           env.xdumpFrom(xp,r);

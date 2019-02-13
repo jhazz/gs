@@ -35,6 +35,7 @@ declare const INIT_64K_PAGECOUNT: usize;
 declare const MAX_64K_PAGECOUNT: usize;
 declare const X_BUFFER_SIZE: usize; // eXchange Buffer places right after HEAP_BASE, aligned to 8
 declare function xdump(): void;
+declare function xprintf(): void;
 export function getHeapBase(): usize {
   return HEAP_BASE;
 }
@@ -155,9 +156,9 @@ export function info(): void {
   //  logger(sizeof<BATBlockHeader>(), xtype.i32);
   //  logger(alignof<BATBlockHeader>(), xtype.i32);
   xbegin();
-  xpushString("ABC");
+  xpushString("AB '{$2}' CDEF {$1} ghj");
   xpushU32(332211);
   xpushString("123456");
-  xdump();
+  xprintf();
   
 }

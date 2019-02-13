@@ -6,12 +6,12 @@
  (import "gs.as" "INIT_64K_PAGECOUNT" (global $assembly/gs/gs.as/INIT_64K_PAGECOUNT i32))
  (import "gs.as" "MAX_64K_PAGECOUNT" (global $assembly/gs/gs.as/MAX_64K_PAGECOUNT i32))
  (import "gs.as" "X_BUFFER_SIZE" (global $assembly/gs/gs.as/X_BUFFER_SIZE i32))
- (import "gs.as" "xdump" (func $assembly/gs/gs.as/xdump))
+ (import "gs.as" "xprintf" (func $assembly/gs/gs.as/xprintf))
  (memory $0 1)
  (data (i32.const 8) "\02\00\00\006\005\00")
  (data (i32.const 16) "\08\00\00\00A\00B\00C\00E\00F\00G\00H\00I\00")
- (data (i32.const 40) "\03\00\00\00A\00B\00C\00")
- (data (i32.const 56) "\06\00\00\001\002\003\004\005\006\00")
+ (data (i32.const 40) "\17\00\00\00A\00B\00 \00\'\00{\00$\002\00}\00\'\00 \00C\00D\00E\00F\00 \00{\00$\001\00}\00 \00g\00h\00j\00")
+ (data (i32.const 96) "\06\00\00\001\002\003\004\005\006\00")
  (table $0 1 funcref)
  (elem (i32.const 0) $null)
  (global $assembly/gs/gs.as/HO i32 (i32.const 8))
@@ -38,7 +38,7 @@
  (global $assembly/gs/gs.as/xtype.u32 i32 (i32.const 6))
  (global $assembly/gs/gs.as/xtype.f32 i32 (i32.const 7))
  (global $assembly/gs/gs.as/xtype.pointer i32 (i32.const 8))
- (global $HEAP_BASE i32 (i32.const 72))
+ (global $HEAP_BASE i32 (i32.const 112))
  (export "memory" (memory $0))
  (export "table" (table $0))
  (export "HO" (global $assembly/gs/gs.as/HO))
@@ -146,10 +146,10 @@
   i32.const 332211
   call $assembly/gs/gs.as/xpushU32
   drop
-  i32.const 56
+  i32.const 96
   call $assembly/gs/gs.as/xpushString
   drop
-  call $assembly/gs/gs.as/xdump
+  call $assembly/gs/gs.as/xprintf
  )
  (func $start (; 9 ;) (type $_)
   (local $0 i32)

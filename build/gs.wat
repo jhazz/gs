@@ -1,7 +1,7 @@
 (module
  (type $i (func (result i32)))
- (type $v (func))
- (type $iv (func (param i32)))
+ (type $_ (func))
+ (type $i_ (func (param i32)))
  (type $ii (func (param i32) (result i32)))
  (import "gs.as" "INIT_64K_PAGECOUNT" (global $assembly/gs/gs.as/INIT_64K_PAGECOUNT i32))
  (import "gs.as" "MAX_64K_PAGECOUNT" (global $assembly/gs/gs.as/MAX_64K_PAGECOUNT i32))
@@ -12,7 +12,7 @@
  (data (i32.const 16) "\08\00\00\00A\00B\00C\00E\00F\00G\00H\00I\00")
  (data (i32.const 40) "\03\00\00\00A\00B\00C\00")
  (data (i32.const 56) "\06\00\00\001\002\003\004\005\006\00")
- (table $0 1 anyfunc)
+ (table $0 1 funcref)
  (elem (i32.const 0) $null)
  (global $assembly/gs/gs.as/HO i32 (i32.const 8))
  (global $assembly/gs/gs.as/COLOR i32 (i32.const 16))
@@ -53,98 +53,97 @@
  (export "info" (func $assembly/gs/gs.as/info))
  (start $start)
  (func $assembly/gs/gs.as/getHeapBase (; 1 ;) (type $i) (result i32)
-  get_global $HEAP_BASE
+  global.get $HEAP_BASE
  )
  (func $assembly/gs/gs.as/gsGetXBufferStartOffset (; 2 ;) (type $i) (result i32)
-  get_global $assembly/gs/gs.as/xBufferStartOffset
+  global.get $assembly/gs/gs.as/xBufferStartOffset
  )
- (func $assembly/gs/gs.as/reset (; 3 ;) (type $v)
+ (func $assembly/gs/gs.as/reset (; 3 ;) (type $_)
   (local $0 i32)
   i32.const 0
-  set_global $assembly/gs/gs.as/BATFirstBlock
-  get_global $assembly/gs/gs.as/storeStartOffset
-  set_local $0
+  global.set $assembly/gs/gs.as/BATFirstBlock
+  global.get $assembly/gs/gs.as/storeStartOffset
+  local.set $0
   i32.const 1
-  set_global $assembly/gs/gs.as/BATInited
+  global.set $assembly/gs/gs.as/BATInited
  )
- (func $assembly/gs/gs.as/blockAllocate (; 4 ;) (type $iv) (param $0 i32)
-  get_global $assembly/gs/gs.as/BATInited
+ (func $assembly/gs/gs.as/blockAllocate (; 4 ;) (type $i_) (param $0 i32)
+  global.get $assembly/gs/gs.as/BATInited
   i32.eqz
   if
    call $assembly/gs/gs.as/reset
   end
  )
  (func $assembly/gs/gs.as/xbegin (; 5 ;) (type $i) (result i32)
-  get_global $assembly/gs/gs.as/xBufferStartOffset
-  set_global $assembly/gs/gs.as/xpointer
-  get_global $assembly/gs/gs.as/xpointer
-  get_global $assembly/gs/gs.as/xtype.array
+  global.get $assembly/gs/gs.as/xBufferStartOffset
+  global.set $assembly/gs/gs.as/xpointer
+  global.get $assembly/gs/gs.as/xpointer
+  global.get $assembly/gs/gs.as/xtype.array
   i32.store8
-  get_global $assembly/gs/gs.as/xpointer
+  global.get $assembly/gs/gs.as/xpointer
   i32.const 1
   i32.add
-  set_global $assembly/gs/gs.as/xpointer
-  get_global $assembly/gs/gs.as/xpointer
-  get_global $assembly/gs/gs.as/xtype.eoa
+  global.set $assembly/gs/gs.as/xpointer
+  global.get $assembly/gs/gs.as/xpointer
+  global.get $assembly/gs/gs.as/xtype.eoa
   i32.store8
-  get_global $assembly/gs/gs.as/xpointer
+  global.get $assembly/gs/gs.as/xpointer
  )
  (func $assembly/gs/gs.as/xpushString (; 6 ;) (type $ii) (param $0 i32) (result i32)
   (local $1 i32)
   block (result i32)
-   get_global $assembly/gs/gs.as/xpointer
-   tee_local $1
+   global.get $assembly/gs/gs.as/xpointer
+   local.tee $1
    i32.const 1
    i32.add
-   set_global $assembly/gs/gs.as/xpointer
-   get_local $1
+   global.set $assembly/gs/gs.as/xpointer
+   local.get $1
   end
-  get_global $assembly/gs/gs.as/xtype.staticString
+  global.get $assembly/gs/gs.as/xtype.staticString
   i32.store8
-  get_global $assembly/gs/gs.as/xpointer
-  get_local $0
+  global.get $assembly/gs/gs.as/xpointer
+  local.get $0
   i32.store
-  get_global $assembly/gs/gs.as/xpointer
+  global.get $assembly/gs/gs.as/xpointer
   i32.const 4
   i32.add
-  set_global $assembly/gs/gs.as/xpointer
-  get_global $assembly/gs/gs.as/xpointer
-  get_global $assembly/gs/gs.as/xtype.eoa
+  global.set $assembly/gs/gs.as/xpointer
+  global.get $assembly/gs/gs.as/xpointer
+  global.get $assembly/gs/gs.as/xtype.eoa
   i32.store8
   i32.const 1
  )
  (func $assembly/gs/gs.as/xpushU32 (; 7 ;) (type $ii) (param $0 i32) (result i32)
   (local $1 i32)
   block (result i32)
-   get_global $assembly/gs/gs.as/xpointer
-   tee_local $1
+   global.get $assembly/gs/gs.as/xpointer
+   local.tee $1
    i32.const 1
    i32.add
-   set_global $assembly/gs/gs.as/xpointer
-   get_local $1
+   global.set $assembly/gs/gs.as/xpointer
+   local.get $1
   end
-  get_global $assembly/gs/gs.as/xtype.u32
+  global.get $assembly/gs/gs.as/xtype.u32
   i32.store8
-  get_global $assembly/gs/gs.as/xpointer
-  get_local $0
+  global.get $assembly/gs/gs.as/xpointer
+  local.get $0
   i32.store
-  get_global $assembly/gs/gs.as/xpointer
+  global.get $assembly/gs/gs.as/xpointer
   i32.const 4
   i32.add
-  set_global $assembly/gs/gs.as/xpointer
-  get_global $assembly/gs/gs.as/xpointer
-  get_global $assembly/gs/gs.as/xtype.eoa
+  global.set $assembly/gs/gs.as/xpointer
+  global.get $assembly/gs/gs.as/xpointer
+  global.get $assembly/gs/gs.as/xtype.eoa
   i32.store8
   i32.const 1
  )
- (func $assembly/gs/gs.as/info (; 8 ;) (type $v)
-  (local $0 i32)
+ (func $assembly/gs/gs.as/info (; 8 ;) (type $_)
   call $assembly/gs/gs.as/xbegin
-  set_local $0
+  drop
   i32.const 40
   call $assembly/gs/gs.as/xpushString
   drop
-  i32.const 778899
+  i32.const 332211
   call $assembly/gs/gs.as/xpushU32
   drop
   i32.const 56
@@ -152,38 +151,38 @@
   drop
   call $assembly/gs/gs.as/xdump
  )
- (func $start (; 9 ;) (type $v)
+ (func $start (; 9 ;) (type $_)
   (local $0 i32)
   nop
   nop
   nop
   block $assembly/gs/gs.as/align|inlined.0 (result i32)
-   get_global $HEAP_BASE
-   set_local $0
-   get_local $0
-   get_global $assembly/gs/gs.as/AL_MASK
+   global.get $HEAP_BASE
+   local.set $0
+   local.get $0
+   global.get $assembly/gs/gs.as/AL_MASK
    i32.add
-   get_global $assembly/gs/gs.as/AL_MASK
+   global.get $assembly/gs/gs.as/AL_MASK
    i32.const -1
    i32.xor
    i32.and
   end
-  set_global $assembly/gs/gs.as/xBufferStartOffset
+  global.set $assembly/gs/gs.as/xBufferStartOffset
   block $assembly/gs/gs.as/alignToBlock|inlined.0 (result i32)
-   get_global $assembly/gs/gs.as/xBufferStartOffset
-   get_global $assembly/gs/gs.as/X_BUFFER_SIZE
+   global.get $assembly/gs/gs.as/xBufferStartOffset
+   global.get $assembly/gs/gs.as/X_BUFFER_SIZE
    i32.add
-   set_local $0
-   get_local $0
-   get_global $assembly/gs/gs.as/BLOCK_MASK
+   local.set $0
+   local.get $0
+   global.get $assembly/gs/gs.as/BLOCK_MASK
    i32.add
-   get_global $assembly/gs/gs.as/BLOCK_MASK
+   global.get $assembly/gs/gs.as/BLOCK_MASK
    i32.const -1
    i32.xor
    i32.and
   end
-  set_global $assembly/gs/gs.as/storeStartOffset
+  global.set $assembly/gs/gs.as/storeStartOffset
  )
- (func $null (; 10 ;) (type $v)
+ (func $null (; 10 ;) (type $_)
  )
 )

@@ -156,7 +156,7 @@ export function info(): void {
   //  logger(alignof<BATBlockHeader>(), xtype.i32);
   xbegin();
   xpushString("ABC");
-  xpushU32(778899);
+  xpushU32(332211);
   xpushString("123456");
   xdump();
   

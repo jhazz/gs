@@ -38,6 +38,11 @@
                 "kind": "build",
                 "isDefault": false
             }
+        },
+        {
+            "type": "npm",
+            "script": "asbuild:test",
+            "problemMatcher": []
         }
     ]
 }

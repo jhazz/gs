@@ -9,9 +9,8 @@
   amd("gs","../build/gs.js", function(exports) {
     gstore1=new exports.gs.Module("gstore1");
     debugger;
-    gstore1.load("../build/gs.wasm",{}).then(()=>{
-      console.log(gstore1);
-      console.log(gstore1.e.gsGetHeapBase());
+    gstore1.loadWasm("../build/gs.wasm").then(()=>{
+      gstore1.e.info();
     });
   });
 </script>

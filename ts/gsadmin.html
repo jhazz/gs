@@ -1,0 +1,167 @@
+<html>
+  <head>
+  <meta charset="utf-8"/>
+  <style>
+    body,html {padding:0px; margin:0px;}
+    #topmenu{background-color:#222222;color:#ffffff;font-family:arial;font-size:10px;font-weight:bold;}
+    #topmenu a{text-decoration:none;color:#ffffff;}
+    #topmenu a:hover{color:#ff2020;}
+    ul {padding:0; margin:0;}
+    #topmenu ul>li{display: inline-block;padding-left:30px; padding-right: 20px; }
+    </style>
+  <script src="gs.js"></script>
+</head>
+<body>
+<table border=0 cellspacing=0 cellpadding=0 width="100%"><tr valign="bottom" height="20px"><td id="topmenu"><ul><li><a href="#page=info" onclick="gsDebug.route()">Info</a></li><li><a href="#page=memorypages" onclick="gsDebug.route()">MemoryPages</a></li></ul></td></tr>
+ <tr valign="top"><td id="maincontainer"></td></tr></table>
+<script>
+var gsDebug=function(exports){
+  function route(){
+    window.setTimeout(function(){
+      var hash = window.location.hash.substr(1);
+      var params = hash.split('&').reduce(function (result, item) {
+        var parts = item.split('=');
+        result[parts[0]] = parts[1];
+        return result;
+      }, {});
+      var maincontainer=document.getElementById('maincontainer');
+
+      console.log (params);
+      switch(params.page){
+        case 'info':
+          maincontainer.innerHTML="<h1>Info</h1>";
+          break;
+        case 'memorypages':
+          makeByteMap({
+            addToContainer:maincontainer,
+            startOffset:8192,
+            length:512,
+            beginFromOffset:8196,
+            width:800,
+            //height:200,
+            cellType:'byte',
+            cellWidth:16,
+            cellHeight:7,
+            minElementsPerRow:8,
+            cellWithHexInside:true,
+            paddingLeft:60, // for rulers
+            paddingTop:20,
+            ranges:[
+              {name:'Static area',color:'#202020',from:0,to:282},
+              {name:'HEAP',color:'#204020',from:283,to:500}
+            ]
+
+
+
+            //ondrawcell:function(addr,ctx,x,y,w,h,cellType){return true;}
+          })
+          break;
+      }
+    },0)
+  }
+  function makeByteMap(mapParams){
+    var container,mapCanvas,ctx,x,y,bytesPerRow,rowNo,totalRows,colNo,addr;
+    var innerSize=(mapParams.width-mapParams.paddingLeft-2);
+    var possibleBytes=Math.floor(innerSize/mapParams.cellWidth);
+    bytesPerRow=Math.floor(possibleBytes/mapParams.minElementsPerRow)*mapParams.minElementsPerRow;
+    if(bytesPerRow==0){
+      console.log("Too short width size!",mapParams);
+      return mapParams;
+    }
+    totalRows=Math.ceil(mapParams.length/bytesPerRow);
+    if(!mapParams.height){
+      mapParams.height=mapParams.paddingTop+totalRows*mapParams.cellHeight;
+    }
+
+    if(!mapParams.canvas){
+      container=mapParams.addToContainer;
+      mapCanvas=document.createElement("canvas");
+      mapCanvas.setAttribute("width",mapParams.width);
+      mapCanvas.setAttribute("height",mapParams.height);
+      ctx = mapCanvas.getContext('2d');
+    }
+    ctx.fillStyle = '#EEEEEE';
+    ctx.fillRect(0,0,mapParams.width, mapParams.height);
+
+    y=mapParams.paddingTop;
+    addr=mapParams.startOffset;
+    var drawTopLine=false,drawLeftLine=false, drawRightLine=false,
+        drawBottomLine=false, drawLeftLine=true, alreadyStarted=false;
+    ctx.lineWidth=1.0;
+    ctx.lineCap="butt";
+    ctx.lineJoin="miter";
+
+
+    for (rowNo=0;rowNo<totalRows;rowNo++){
+      x=mapParams.paddingLeft;
+      for (colNo=0;colNo<bytesPerRow;colNo++){
+        if(addr>=mapParams.beginFromOffset){
+          if(!alreadyStarted) {
+            alreadyStarted=true;
+            // draw first byte
+            drawTopLine=true;
+            drawLeftLine=true;
+          }
+        }
+        if(mapParams.ondrawcell){
+          mapParams.ondrawcell(addr,ctx,x,y,mapParams.cellWidth, mapParams.cellHeight, mapParams.cellType);
+        } else {
+          ctx.fillStyle = ((colNo+rowNo)&1) ? '#2020FF': '#20f02F';
+          ctx.fillRect(x, y, mapParams.cellWidth, mapParams.cellHeight);
+        }
+        ctx.strokeStyle ='#000000';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x-1,y-1);
+        if(drawTopLine){
+          ctx.lineTo(x+mapParams.cellWidth+1,y-1);
+        } else {
+          ctx.moveTo(x+mapParams.cellWidth+1,y-1);
+        }
+
+        if(drawRightLine){
+          ctx.lineTo(x+mapParams.cellWidth+1,y+mapParams.cellHeight+1);
+        } else {
+          ctx.moveTo(x+mapParams.cellWidth+1,y+mapParams.cellHeight+1);
+        }
+
+        if(drawBottomLine){
+          ctx.lineTo(x-1,y+mapParams.cellHeight+1);
+        } else {
+          ctx.moveTo(x-1,y+mapParams.cellHeight+1);
+        }
+
+        if(drawLeftLine){
+          ctx.lineTo(x-1,y-1);
+        } else {
+          ctx.moveTo(x-1,y-1);
+        }
+
+        ctx.stroke();
+        x+=mapParams.cellWidth;
+        drawLeftLine=false;
+      }
+      y+=mapParams.cellHeight;
+      drawTopLine=false;
+      if(addr>=mapParams.beginFromOffset){
+        drawLeftLine=true;
+      }
+
+    }
+
+    ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
+    ctx.fillRect(30, 30, 50, 50);
+    if(!mapParams.canvas){
+      container.appendChild(mapCanvas);
+      mapParams.canvas=mapCanvas;
+    }
+    return mapParams;
+  }
+  exports.route=route;
+  route();
+};
+gsDebug(gsDebug);
+</script>
+
+</body>
+</html>

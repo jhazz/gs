@@ -1,6 +1,6 @@
 # GraphStorage
 WebAssembly Graph Storage for using in a TypeScript programs.
-Under lazy development.
+Under lazy development. To make this graph usable I have to build up multivector immutable and versionable memory allocator 
 
 ## Usage
 Project has two parts comibined in one:
